@@ -1,6 +1,7 @@
 # Steps To Run
 - Clone the project
 - Open using VS Code
+- in the terminal `npm install`
 - F5 to open the dev env IDE
 - From the IDE open the Sample folder which contains .NET 6 project
 - Make sure that you have .NET 6 SDK & runtime installed
