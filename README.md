@@ -1,3 +1,12 @@
+# Steps To Run
+- Clone the project
+- Open using VS Code
+- F5 to open the dev env IDE
+- From the IDE open the Sample folder which contains .NET 6 project
+- Make sure that you have .NET 6 SDK & runtime installed
+- In the terminal hit `dotnet run` to ensure that it works as expected
+- Ctl_Shift+P then write Visualize Stack and hit enter
+- Now F5 & You should be able to see the drawings in there
 # callstackninja README
 
 This is the README for your extension "callstackninja". After writing up a brief description, we recommend including the following sections.
