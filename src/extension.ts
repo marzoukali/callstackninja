@@ -65,6 +65,9 @@ function getWebviewContent(sfs?: any) {
   </body>
   </html>`;
 	}else{
+		var json = JSON.parse(sfs);
+		var stackFrames = json.body.stackFrames;
+
 		return `<!DOCTYPE html>
 		<html lang="en">
 		<head>
@@ -73,15 +76,18 @@ function getWebviewContent(sfs?: any) {
 			<title>Call Stack Ninja</title>
 			</head>
 		<body>
-			<h6>${sfs}</h6>
-			<canvas id="stackFramesContainer" width="300" height="150" style="border:1px solid #d3d3d3;">Your browser does not support the HTML5 canvas tag.</canvas>
+			<h6>${stackFrames}</h6>
+			<canvas id="stackFramesContainer" width="300" height="500" style="border:1px solid #d3d3d3;">Your browser does not support the HTML5 canvas tag.</canvas>
 		</body>
 		<script>
 		var c = document.getElementById("stackFramesContainer");
 		var ctx = c.getContext("2d");
 		ctx.beginPath();
-		ctx.rect(20, 20, 150, 100);
+		ctx.rect(10, 190, 65, 300);
 		ctx.stroke();
+		for (let frame of stackFrames) {
+			<h3>frame</h3>
+		}  
         </script>
 		</html>`;
 	}
