@@ -1,0 +1,14 @@
+﻿Console.WriteLine("What is your name?");
+var currentDate = DateTime.Now;
+ Console.WriteLine($"{Environment.NewLine}Hello, Ahmed , on {currentDate:d} at {currentDate:t}!");
+Console.Write($"{Environment.NewLine} Press any key to exit...");
+Console.WriteLine($"{Environment.NewLine}Hello, Ahmed , on {currentDate:d} at {currentDate:t}!");
+Console.Write($"{Environment.NewLine} Press any key to exit...");
+Console.WriteLine($"{Environment.NewLine}Hello, Ahmed , on {currentDate:d} at {currentDate:t}!");
+Console.Write($"{Environment.NewLine} Press any key to exit...");
+ Console.WriteLine($"{Environment.NewLine}Hello, Ahmed , on {currentDate:d} at {currentDate:t}!");
+ Console.Write($"{Environment.NewLine} Press any key to exit...");
+Console.WriteLine($"{Environment.NewLine}Hello, Ahmed , on {currentDate:d} at {currentDate:t}!");
+Console.Write($"{Environment.NewLine} Press any key to exit...");
+Console.WriteLine($"{Environment.NewLine}Hello, Ahmed , on {currentDate:d} at {currentDate:t}!");
+Console.Write($"{Environment.NewLine} Press any key to exit...");
