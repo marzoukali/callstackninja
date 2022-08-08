@@ -6,6 +6,7 @@ export function activate(context: vscode.ExtensionContext) {
 	
 
 	console.log('Congratulations, your extension "callstackninja" is now active!');
+	var sfsBody:any[] = [];
 
 
 	let disposable = vscode.commands.registerCommand('callstackninja.visualizestack', () => {
@@ -26,19 +27,23 @@ export function activate(context: vscode.ExtensionContext) {
 			createDebugAdapterTracker(session: vscode.DebugSession) {
 			  return {
 				onWillReceiveMessage: m => {
-					// console.log(`> ${JSON.stringify(m, undefined, 2)}`);
 
 				},
 				onDidSendMessage: m => {
 					
-					var eventStr = JSON.stringify(m, undefined, 2);
-
-					console.log(`${eventStr}`);
 
 					if(m.type === "response" && m.command === "stackTrace")
 					{
-						panel.webview.html = getWebviewContent(eventStr);
+						sfsBody  = m.body.stackFrames;
 					}
+
+					if(m.type === "response" && m.command === "variables")
+					{
+						var variables:any[] =  m.body.variables;
+						sfsBody[0]['variables']  = variables;
+					}
+
+					panel.webview.html = getWebviewContent(JSON.stringify(sfsBody));
 				}
 			  };
 			}
@@ -76,9 +81,6 @@ function getWebviewContent(sfs?: any) {
 		</body>
 		</html>`;
 	}else{
-		var json = JSON.parse(sfs);
-		var stackFrames = JSON.stringify(json.body.stackFrames);
-
 		return `<!DOCTYPE html>
 		<html lang="en">
 		<head>
@@ -89,10 +91,10 @@ function getWebviewContent(sfs?: any) {
 		<body>
 		<h2 align = "center">Stack Visualization</h2>
 		<svg  id = "stackFramesSvg" height = "500" xmlns = "http://www.w3.org/2000/svg">
-		<rect height="500" width="200" />
+		<rect height="500" width="300" />
 		</svg>
 		
-		<sf id="sf-id" data-frames='${stackFrames}' ></sf>
+		<sf id="sf-id" data-frames='${sfs}' ></sf>
 		
 			<script>
 
@@ -114,25 +116,36 @@ function getWebviewContent(sfs?: any) {
 			 
 			 var frameSlot = document.createElementNS("http://www.w3.org/2000/svg", "rect"); 
 			frameSlot.setAttribute("height",50); 
-			frameSlot.setAttribute("width",200); 
+			frameSlot.setAttribute("width",300); 
 			frameSlot.setAttribute("y",currentFrameHeight); 
 			frameSlot.setAttribute("fill", frameColor);
 			frameColor = frameColor === "red" ? "blue" : "red";
 			frameHeight += 50;
-				var txt = document.createElementNS("http://www.w3.org/2000/svg", "text");
+			var txt = document.createElementNS("http://www.w3.org/2000/svg", "text");
 					txt.setAttribute("y", currentFrameHeight+40);
 					txt.setAttribute("x", 25);
 					txt.setAttribute("height",50); 
-					txt.setAttribute("width", 150);
+					txt.setAttribute("width", 300);
 					txt.style.fill = "white";
 					txt.style.fontFamily = "Calibri";
 					txt.style.fontSize = "15";
 					txt.style.fontWeight = 300;
-					txt.textContent  = frame.name.split('.').pop();
-					var group = document.createElementNS("http://www.w3.org/2000/svg", "g");
-					group.appendChild(frameSlot);
-					group.append(txt);
-					svg.appendChild(group);
+					var innerTxt = frame.name.split('.').pop();
+					
+
+				if(frame.variables !== undefined && frame.variables !== null)
+				{
+					for(let x of frame.variables)
+					{
+						innerTxt += ' ' + '[ ' + x.name + ':' + x.value + ' ]';
+					}
+				}
+
+				txt.textContent  = innerTxt;
+				var group = document.createElementNS("http://www.w3.org/2000/svg", "g");
+				group.appendChild(frameSlot);
+				group.append(txt);
+				svg.appendChild(group);
 			 }
 		
 			</script>
