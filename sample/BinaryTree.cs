@@ -410,6 +410,7 @@ namespace Sample
             var root = new BTNode(preorder[preStart]);
             var inIndex = -1;
 
+            // Can be improved using map to O(1) and overall O(n)
             for (int i = inStart; i <= inEnd; i++)
             {
                 if (inorder[i] == root.Data)
