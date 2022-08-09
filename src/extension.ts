@@ -73,70 +73,114 @@ function getWebviewContent(sfs?: any) {
 		return `<!DOCTYPE html>
 		<html lang="en">
 		<head>
+		<style>
+		#stack-table {
+			font-family: Arial, Helvetica, sans-serif;
+			border-collapse: collapse;
+			width: 100%;
+		  }
+		  
+		  #stack-table tr{
+			width: 150%;
+		  }
+		  
+		  #stack-table td{
+			border: 1px solid #fff;
+			padding: 8px;
+			width: 500px;
+			background-color: #242f38;
+			height: 80px;
+			text-align: center;
+			vertical-align: middle;
+		  }
+		  .tree-node {
+			border: 1px solid #fff;
+			height: 200px;
+			width: 200px;
+			background-color: #242f38;
+			border-radius: 50%;
+			display: inline-block;
+			margin-bottom: 200px;
+			text-align: center;
+			vertical-align: middle;
+		  }
+
+		</style>
 			<meta charset="UTF-8">
 			<meta name="viewport" content="width=device-width, initial-scale=1.0">
-			<title>Cat Coding</title>
+			<title>Stack Frame Visualization</title>
 		</head>
 		<body>
-		<h2 align = "center">Stack Visualization</h2>
-		<svg  id = "stackFramesSvg" height = "500" xmlns = "http://www.w3.org/2000/svg">
-		<rect height="500" width="300" />
-		</svg>
+		
+		<h2 align = "center">Stack Visualization (Stack View)</h2>
+		
+		<div id="stack-container">
+
+		<table id="stack-table">
+		</table>
+		</div>
+
+
+		<h2 align = "center">Stack Visualization (Tree View)</h2>
+		
+		<div id="trees-container">
+		</div>
+
 		
 		<sf id="sf-id" data-frames='${sfs}' ></sf>
 		
 			<script>
 
-			var svg = document.getElementById("stackFramesSvg"); 
-
-			var maxHeight = 500;
-			var frameHeight =50;
-			var frameColor = "red";
-
 			const framesObj = document.querySelector('#sf-id');
+			var jsonFrames = JSON.parse(framesObj.dataset.frames);
 
-			console.log(framesObj.dataset.frames);
+			var treesContainer = document.getElementById("trees-container"); 
 
-			var jsonFrames = JSON.parse(framesObj.dataset.frames).reverse();
-
+			
 			 for (let frame of jsonFrames) {
-			 
-			 var currentFrameHeight = maxHeight - frameHeight;
-			 
-			 var frameSlot = document.createElementNS("http://www.w3.org/2000/svg", "rect"); 
-			frameSlot.setAttribute("height",50); 
-			frameSlot.setAttribute("width",300); 
-			frameSlot.setAttribute("y",currentFrameHeight); 
-			frameSlot.setAttribute("fill", frameColor);
-			frameColor = frameColor === "red" ? "blue" : "red";
-			frameHeight += 50;
-			var txt = document.createElementNS("http://www.w3.org/2000/svg", "text");
-					txt.setAttribute("y", currentFrameHeight+40);
-					txt.setAttribute("x", 25);
-					txt.setAttribute("height",50); 
-					txt.setAttribute("width", 300);
-					txt.style.fill = "white";
-					txt.style.fontFamily = "Calibri";
-					txt.style.fontSize = "15";
-					txt.style.fontWeight = 300;
-					var innerTxt = frame.name.split('.').pop();
-					
+				var fullTreeStructure = '';
+				for (let frame of jsonFrames) 
+				   {
+					   var innerTreeStructure = '<div class="tree-node"><b>' + frame.name.split('.').pop() + '</b> <br>';
+   
+					   if(frame.variables !== undefined && frame.variables !== null)
+					   {
+						   for(let x of frame.variables)
+						   {
+							innerTreeStructure += '<p style="color:green"> ' + '( ' + x.name + ':' + x.value + ' ) </p>';
+						   }
+					   }
+   
+					   innerTreeStructure += '</div>';
+   
+					   fullTreeStructure += innerTreeStructure;
+				   }
+   
+				   treesContainer.innerHTML = fullTreeStructure;
+		
+			 }
 
-				if(frame.variables !== undefined && frame.variables !== null)
+			 var table =  document.getElementById("stack-table");
+			 var fullText = '';
+			 for (let frame of jsonFrames) 
 				{
-					for(let x of frame.variables)
+					var innerTxt = '<tr><td><b>' + frame.name.split('.').pop() + '</b> <br>';
+
+					if(frame.variables !== undefined && frame.variables !== null)
 					{
-						innerTxt += ' ' + '[ ' + x.name + ':' + x.value + ' ]';
+						for(let x of frame.variables)
+						{
+							innerTxt += '<p style="color:green"> ' + '( ' + x.name + ':' + x.value + ' ) </p> <br>';
+						}
 					}
+
+					innerTxt += '</td></tr>';
+
+					fullText += innerTxt;
 				}
 
-				txt.textContent  = innerTxt;
-				var group = document.createElementNS("http://www.w3.org/2000/svg", "g");
-				group.appendChild(frameSlot);
-				group.append(txt);
-				svg.appendChild(group);
-			 }
-		
+				table.innerHTML = fullText;
+
 			</script>
 		</body>
 		</html>`;
