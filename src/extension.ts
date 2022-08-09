@@ -4,14 +4,11 @@ import * as vscode from 'vscode';
 
 export function activate(context: vscode.ExtensionContext) {
 	
-
-	console.log('Congratulations, your extension "callstackninja" is now active!');
 	var sfsBody:any[] = [];
 
 
 	let disposable = vscode.commands.registerCommand('callstackninja.visualizestack', () => {
 		vscode.window.showInformationMessage('Hello World from callstackninja!');
-		//vscode.commands.executeCommand('editor.action.addCommentLine');
 
 		const panel = vscode.window.createWebviewPanel(
 			'CallStackNinja',
@@ -67,17 +64,9 @@ function getWebviewContent(sfs?: any) {
 			<title>Cat Coding</title>
 		</head>
 		<body>
-			<img src="https://media.giphy.com/media/JIX9t2j0ZTN9S/giphy.gif" width="300" />
-			<h1 id="lines-of-code-counter">0</h1>
-		
-			<script>
-				const counter = document.getElementById('lines-of-code-counter');
-		
-				let count = 0;
-				setInterval(() => {
-					counter.textContent = count++;
-				}, 100);
-			</script>
+			<h3>Hello From Stacktrace Ninja</h3>
+			<h5>We provide easy way to visualize the call stack</h5>
+			<p>Just add breakpoints in where you want to see the call stack visualization and enjoy</p>
 		</body>
 		</html>`;
 	}else{
