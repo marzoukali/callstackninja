@@ -397,7 +397,7 @@ namespace Sample
 
         public BTNode? BuildTree(int[] preorder, int[] inorder)
         {
-            return BuildTreeHelper(0, 0, inorder.Length - 1, preorder, inorder);
+             return BuildTreeHelper(0, 0, inorder.Length - 1, preorder, inorder);
         }
 
         public BTNode? BuildTreeHelper(int preStart, int inStart, int inEnd, int[] preorder, int[] inorder)
