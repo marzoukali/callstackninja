@@ -181,7 +181,6 @@ function getWebviewContent(sfs?: any) {
 			const framesObj = document.querySelector('#sf-id');
 			var jsonFrames = JSON.parse(framesObj.dataset.frames);
 			
-			console.log("Hello");
 			var stack =  document.getElementById("stack");
 			for (let frame of jsonFrames) 
 			{
