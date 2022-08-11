@@ -3,7 +3,6 @@ import * as path from 'path';
 import * as fs from 'fs';
 export function activate(context: vscode.ExtensionContext) {
 	var stackFrameArray:any[] = [];
-
 	let disposable = vscode.commands.registerCommand('callstackninja.visualizestack', () => {
 		vscode.window.showInformationMessage('Hello World from callstackninja!');
 
@@ -19,12 +18,21 @@ export function activate(context: vscode.ExtensionContext) {
 			}
 		  );
 
+		//Media Paths
 		var extensionPath = context.extensionPath;
-		panel.webview.html = getWebviewContent(extensionPath, null);
-
-		//const pathToCSS = vscode.Uri.file(path.join(context.extensionPath, 'media/visual.css'));
-		//console.log(String(panel.webview.asWebviewUri(pathToCSS)));
+		console.log(extensionPath);
 		
+		
+		var onDiskPath = vscode.Uri.file(path.join(context.extensionPath, 'media/visual.css'));
+		var styleSrc = panel.webview.asWebviewUri(onDiskPath).toString();
+		
+		
+		onDiskPath = vscode.Uri.file(path.join(context.extensionPath, 'media/visualize.js'));
+		var jsSrc = panel.webview.asWebviewUri(onDiskPath).toString();
+		
+		panel.webview.html = getWebviewContent(extensionPath, null, null, null);
+		
+		//Debugger Event Listener
 		vscode.debug.registerDebugAdapterTrackerFactory('*', {
 			createDebugAdapterTracker(session: vscode.DebugSession) {
 			  return {
@@ -46,7 +54,7 @@ export function activate(context: vscode.ExtensionContext) {
 							//console.log(JSON.stringify(m));
 						}
 					}
-					panel.webview.html = getWebviewContent(extensionPath, JSON.stringify(stackFrameArray));
+					panel.webview.html = getWebviewContent(extensionPath,styleSrc,jsSrc, JSON.stringify(stackFrameArray));
 				}
 			  };
 			}
@@ -58,16 +66,22 @@ export function activate(context: vscode.ExtensionContext) {
 }
 
 
-function getWebviewContent(extensionPath:string, sfs?: any) {
+function getWebviewContent(extensionPath:string,styleSrc?:any,jsSrc?:any, sfs?: any) {
 	if(!sfs)
 	{
-		return fs.readFileSync(extensionPath + "/media/index.html").toString();
+		return fs.readFileSync(`${extensionPath}/media/index.html`).toString();
 	}
 	else{
 		//very inefficient 
 		//changing what is between "" for the  data-frames inside html somehow will be faster
-		var visualizeHtmlString = fs.readFileSync(extensionPath + "/media/visual.html").toString();
-		visualizeHtmlString = visualizeHtmlString.replace("{sfs}",sfs.toString());
+		
+		var visualizeHtmlString = fs.readFileSync(`${extensionPath}/media/visual.html`).toString();
+		visualizeHtmlString = visualizeHtmlString.replace("{{sfs}}",sfs);
+		
+		//Replaces html link placeholders with vscode.Uri
+		visualizeHtmlString = visualizeHtmlString.replace("{{styleSrc}}", styleSrc);
+		visualizeHtmlString = visualizeHtmlString.replace("{{jsSrc}}", jsSrc);
+		
 		return visualizeHtmlString;
 	}
   }

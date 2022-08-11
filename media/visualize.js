@@ -1,3 +1,9 @@
+/*window.addEventListener('message', event => {
+    const message = event.data; // The JSON data our extension sent
+    console.log(message);
+});
+*/
+
 const framesObj = document.querySelector('#sf-id');
 var jsonFrames = JSON.parse(framesObj.dataset.frames);
 
@@ -15,7 +21,7 @@ for (let frame of jsonFrames)
         }
     }
     fullText += innerTxt;
-    fullText += "</div>"
+    fullText += "</div>";
     stack.innerHTML = fullText + stack.innerHTML;
     stack.scrollTop = stack.scrollHeight;
 }
