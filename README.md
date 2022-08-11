@@ -1,6 +1,7 @@
 # Steps To Run
 - Clone the project
 - Open using VS Code
+- Do not click yes  ![image](https://user-images.githubusercontent.com/40539669/184198506-e6c6e0ec-79f0-49e3-b432-7461d2c0fd1a.png)
 - in the terminal `npm install`
 - if you don't see out folder in the root path, run this cmd in the terminal `npm run compile` to generate the file.
 - F5 to open the dev env IDE
