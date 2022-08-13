@@ -1,6 +1,7 @@
 # Steps To Run
 - Clone the project
 - Open using VS Code
+- Do not click yes on C# (extension) popup that requires assets to build and debug
 - in the terminal `npm install`
 - if you don't see out folder in the root path, run this cmd in the terminal `npm run compile` to generate the file.
 - F5 to open the dev env IDE
