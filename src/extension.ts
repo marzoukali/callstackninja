@@ -103,15 +103,11 @@ function loadPage(
 }
 
 function bindPage(pageContent: string, bindValue: string) {
-  console.log(pageContent);
-  console.log(bindValue);
 
   pageContent = pageContent.replace(
     /data-binds='(.*)'/,
     `data-binds='${bindValue}'`
   );
-
-  console.log(pageContent);
 
   return pageContent;
 }
