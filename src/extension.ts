@@ -1,91 +1,119 @@
-import * as vscode from 'vscode';
-import * as path from 'path';
-import * as fs from 'fs';
+import * as vscode from "vscode";
+import * as path from "path";
+import * as fs from "fs";
+
 export function activate(context: vscode.ExtensionContext) {
-	var stackFrameArray:any[] = [];
-	let disposable = vscode.commands.registerCommand('callstackninja.visualizestack', () => {
-		vscode.window.showInformationMessage('Hello World from callstackninja!');
+  let stackFrames: any[] = [];
 
-		const panel = vscode.window.createWebviewPanel(
-			'CallStackNinja',
-			'Call Stack Ninja', 
-			vscode.ViewColumn.Two, 
-			{
-				enableScripts: true,
+  let disposable = vscode.commands.registerCommand(
+    "callstackninja.visualizestack",
+    () => {
+      const panel = vscode.window.createWebviewPanel(
+        "CallStackNinja",
+        "Call Stack Ninja",
+        vscode.ViewColumn.Two,
+        {
+          enableScripts: true,
 
-				//Control which resources can be loaded from the user's machine
-				localResourceRoots: [vscode.Uri.file(path.join(context.extensionPath, 'media'))]
-			}
-		  );
+          //Control which resources can be loaded from the user's machine
+          localResourceRoots: [
+            vscode.Uri.file(path.join(context.extensionPath, "assets")),
+          ],
+        }
+      );
 
-		//Media Paths
-		var extensionPath = context.extensionPath;
-		console.log(extensionPath);
-		
-		
-		var onDiskPath = vscode.Uri.file(path.join(context.extensionPath, 'media/visual.css'));
-		var styleSrc = panel.webview.asWebviewUri(onDiskPath).toString();
-		
-		
-		onDiskPath = vscode.Uri.file(path.join(context.extensionPath, 'media/visualize.js'));
-		var jsSrc = panel.webview.asWebviewUri(onDiskPath).toString();
-		
-		panel.webview.html = getWebviewContent(extensionPath, null, null, null);
-		
-		//Debugger Event Listener
-		vscode.debug.registerDebugAdapterTrackerFactory('*', {
-			createDebugAdapterTracker(session: vscode.DebugSession) {
-			  return {
-				onWillReceiveMessage: m => {
+      let introPage = loadPage(
+        `${context.extensionPath}/assets/pages/intro/index.html`,
+        "",
+        ""
+      );
+      let stackVisualizationPage = loadPage(
+        `${context.extensionPath}/assets/pages/visualize-stack/index.html`,
+        panel.webview
+          .asWebviewUri(
+            vscode.Uri.file(
+              path.join(
+                context.extensionPath,
+                "assets/pages/visualize-stack/index.js"
+              )
+            )
+          )
+          .toString(),
+        panel.webview
+          .asWebviewUri(
+            vscode.Uri.file(
+              path.join(
+                context.extensionPath,
+                "assets/pages/visualize-stack/index.css"
+              )
+            )
+          )
+          .toString()
+      );
 
-				},
-				onDidSendMessage: m => {
-					if(m.type === "response")
-					{
-						if(m.command === "stackTrace"){
-							stackFrameArray  = m.body.stackFrames;
-							//console.log(JSON.stringify(m));
-						}
+      panel.webview.html = introPage;
 
-						if(m.command === "variables")
-						{
-							var variables:any[] =  m.body.variables;
-							stackFrameArray[0]['variables']  = variables;
-							//console.log(JSON.stringify(m));
-						}
-					}
-					panel.webview.html = getWebviewContent(extensionPath,styleSrc,jsSrc, JSON.stringify(stackFrameArray));
-				}
-			  };
-			}
-		  });
+      //Debugger Event Listener
+      vscode.debug.registerDebugAdapterTrackerFactory("*", {
+        createDebugAdapterTracker(session: vscode.DebugSession) {
+          return {
+            onWillReceiveMessage: (m) => {},
+            onDidSendMessage: (m) => {
+              if (m.type === "response") {
+                if (m.command === "stackTrace") {
+                  stackFrames = m.body.stackFrames;
+                }
 
-	});
+                if (m.command === "variables") {
+                  let variables: any[] = m.body.variables;
+                  stackFrames[0]["variables"] = variables;
+                }
 
-	context.subscriptions.push(disposable);
+                panel.webview.html = bindPage(
+                  stackVisualizationPage,
+                  JSON.stringify(stackFrames)
+                );
+              }
+            },
+          };
+        },
+      });
+    }
+  );
+
+  context.subscriptions.push(disposable);
 }
 
+function loadPage(
+  htmlPagePath: string,
+  jsPagePath: string,
+  cssPagePath: string
+) {
+  let fullPage = fs.readFileSync(htmlPagePath).toString();
 
-function getWebviewContent(extensionPath:string,styleSrc?:any,jsSrc?:any, sfs?: any) {
-	if(!sfs)
-	{
-		return fs.readFileSync(`${extensionPath}/media/index.html`).toString();
-	}
-	else{
-		//very inefficient 
-		//changing what is between "" for the  data-frames inside html somehow will be faster
-		
-		var visualizeHtmlString = fs.readFileSync(`${extensionPath}/media/visual.html`).toString();
-		visualizeHtmlString = visualizeHtmlString.replace("{{sfs}}",sfs);
-		
-		//Replaces html link placeholders with vscode.Uri
-		visualizeHtmlString = visualizeHtmlString.replace("{{styleSrc}}", styleSrc);
-		visualizeHtmlString = visualizeHtmlString.replace("{{jsSrc}}", jsSrc);
-		
-		return visualizeHtmlString;
-	}
+  if (cssPagePath !== null || cssPagePath !== undefined || cssPagePath !== "") {
+    fullPage = fullPage.replace("{{styleSrc}}", cssPagePath);
   }
 
+  if (jsPagePath !== null || jsPagePath !== undefined || jsPagePath !== "") {
+    fullPage = fullPage.replace("{{jsSrc}}", jsPagePath);
+  }
 
-// this method is called when your extension is deactivated
+  return fullPage;
+}
+
+function bindPage(pageContent: string, bindValue: string) {
+  console.log(pageContent);
+  console.log(bindValue);
+
+  pageContent = pageContent.replace(
+    /data-binds='(.*)'/,
+    `data-binds='${bindValue}'`
+  );
+
+  console.log(pageContent);
+
+  return pageContent;
+}
+
 export function deactivate() {}

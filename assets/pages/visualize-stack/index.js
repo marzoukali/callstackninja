@@ -5,9 +5,10 @@
 */
 
 const framesObj = document.querySelector('#sf-id');
-var jsonFrames = JSON.parse(framesObj.dataset.frames);
+var jsonFrames = JSON.parse(framesObj.dataset.binds);
 
 var stack =  document.getElementById("stack");
+
 for (let frame of jsonFrames) 
 {
     var fullText = '<div class="block">';
@@ -25,7 +26,6 @@ for (let frame of jsonFrames)
     stack.innerHTML = fullText + stack.innerHTML;
     stack.scrollTop = stack.scrollHeight;
 }
-console.log(fullText);
 
 /*
 var treesContainer = document.getElementById("trees-container"); 

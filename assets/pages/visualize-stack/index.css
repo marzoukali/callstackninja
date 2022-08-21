@@ -17,8 +17,8 @@ html, body{
 .block-attrib{
     width: 100%;
     text-align: center;
-    border-bottom: 1px dashed black;
-    font-size: 1.2em;
+    border-bottom: 0.5px dashed black;
+    font-size: 0.7em;
     color: #004AB5;
 }
 
@@ -29,21 +29,21 @@ html, body{
     transform:scaleY(-1);
     overflow-x: auto; 
     overflow-y: none;
-    height: 400px;
+    height: 600px;
     width: 70%;
     margin: auto;
 }
 
 .title{
-    color: rgb(231, 100, 52);
-    border-bottom: 1px solid red;
-    font-size: 1.5em;
+    color: rgb(0, 0, 0);
+    border-bottom: 1px solid rgb(0, 0, 0);
+    font-size: 1em;
     text-align: center;
-    padding: 2%;
+    padding: 1%;
 }
 
 .block{
-    background-color: #00C896;
+    background-color: #dbf280;
     width: 90%;
     min-height: 15%;
     margin: 1% auto;
