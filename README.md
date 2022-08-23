@@ -7,9 +7,9 @@ than the traditional call stack displayed by the debugger.
 2. Run the extension from the command pallette using `ctrl + shift + p` and searching for `Visualize Stack`
 3. Watch the magic happen in the next column when you use the debugger as you normally would ✨
 
-
+<div width=50%>
 https://user-images.githubusercontent.com/40539669/186178222-0e55e5ae-a19e-43ad-b660-f98f35720556.mp4
-
+</div>
 
 # Steps To Contribute (Developer)
 - Clone the project
