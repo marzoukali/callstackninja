@@ -6,7 +6,6 @@ than the traditional call stack displayed by the debugger.
 1. After installing this extension, add breakpoints to the lines that needs to be debugged
 2. Run the extension from the command pallette using `ctrl + shift + p` and searching for `Visualize Stack`
 3. Watch the magic happen in the next column when you use the debugger as you normally would ✨
-<video src='https://drive.google.com/file/d/1ibfCOskOQ28llIektlXHn_GWSi08bY-o/view?usp=sharing' width=180/>
 
 # Steps To Contribute (Developer)
 - Clone the project
