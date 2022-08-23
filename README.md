@@ -2,7 +2,7 @@
 A VS Code extension to visualize the call stack in a more friendly way
 than the traditional call stack displayed by the debugger.
 
-#Usage
+# Usage
 1. After installing this extension, add breakpoints to the lines that needs to be debugged
 2. Run the extension from the command pallette using `ctrl + shift + p` and searching for `Visualize Stack`
 3. Watch the magic happen in the next column when you use the debugger as you normally would ✨
