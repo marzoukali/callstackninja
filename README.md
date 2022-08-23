@@ -1,3 +1,4 @@
+#callstackninja
 A VS Code extension to visualize the call stack in a more friendly way
 than the traditional call stack displayed by the debugger.
 
