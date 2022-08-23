@@ -21,6 +21,7 @@ than the traditional call stack displayed by the debugger.
 - Now F5 & You should be able to see the drawings in there
 # callstackninja README
 
+<!--
 ## Features
 
 Describe specific features of your extension including screenshots of your extension in action. Image paths are relative to this README file.
@@ -88,3 +89,4 @@ You can author your README using Visual Studio Code. Here are some useful editor
 * [Markdown Syntax Reference](https://help.github.com/articles/markdown-basics/)
 
 **Enjoy!**
+-->
