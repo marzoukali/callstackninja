@@ -1,4 +1,12 @@
-# Steps To Run
+A VS Code extension to visualize the call stack in a more friendly way
+than the traditional call stack displayed by the debugger.
+
+#Usage
+1- After installing this extension, add breakpoints to the lines that needs to be debugged
+2- Run the extension from the command pallette using `ctrl + shift + p` and searching for `Visualize Stack`
+3- Watch the magic happen in the next column when you use the debugger as you normally would ✨
+
+# Steps To Contribute (Developer)
 - Clone the project
 - Open using VS Code
 - Do not click yes on C# (extension) popup that requires assets to build and debug
@@ -11,8 +19,6 @@
 - Ctl_Shift+P then write Visualize Stack and hit enter
 - Now F5 & You should be able to see the drawings in there
 # callstackninja README
-
-This is the README for your extension "callstackninja". After writing up a brief description, we recommend including the following sections.
 
 ## Features
 
