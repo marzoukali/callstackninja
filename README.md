@@ -19,7 +19,6 @@ than the traditional call stack displayed by the debugger.
 - In the terminal hit `dotnet run` to ensure that it works as expected
 - Ctl_Shift+P then write Visualize Stack and hit enter
 - Now F5 & You should be able to see the drawings in there
-# callstackninja README
 
 <!--
 ## Features
